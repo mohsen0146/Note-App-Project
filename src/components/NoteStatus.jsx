@@ -8,7 +8,6 @@ function NoteStatus() {
   if (!allNotes)
     return (
       <Message>
-        <span>ℹ️</span>
         <span>No notes has been already added!</span>
       </Message>
     );

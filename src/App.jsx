@@ -9,7 +9,7 @@ function App() {
 
   return (
     <AppProvider>
-      <div className="container">
+      <div>
         <NoteHeader sortBy={sortBy} onSort={(e) => setSortBy(e.target.value)} />
         <NoteApp sortBy={sortBy} />
       </div>
