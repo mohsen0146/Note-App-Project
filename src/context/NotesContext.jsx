@@ -1,7 +1,12 @@
-import { createContext, useContext, useReducer } from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
 
 const NotesContext = createContext(null);
 const NotesDispatchContext = createContext(null);
+
+const initialState = [];
+
+const initializer = (initialValue = initialState) =>
+  JSON.parse(localStorage.getItem("localNotes")) || initialValue;
 
 function notesReducer(notes, { type, payload }) {
   switch (type) {
@@ -16,13 +21,21 @@ function notesReducer(notes, { type, payload }) {
         note.id === payload ? { ...note, completed: !note.completed } : note
       );
     }
+    case "edit":{
+      return [...notes.filter((note) => note.id !== payload.id), payload];
+    }
     default:
       throw new Error("Unknown Error" + type);
   }
 }
 
 export default function NotesProvider({ children }) {
-  const [notes, dispatch] = useReducer(notesReducer, []);
+  const [notes, dispatch] = useReducer(notesReducer, [], initializer);
+
+  useEffect(() => {
+    localStorage.setItem("localNotes", JSON.stringify(notes));
+  }, [notes]);
+
   return (
     <NotesContext.Provider value={notes}>
       <NotesDispatchContext.Provider value={dispatch}>

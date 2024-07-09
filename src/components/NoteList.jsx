@@ -1,4 +1,8 @@
+import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useNotes, useNotesDisptch } from "../context/NotesContext";
+import Modal from "./Modal";
+import { useState } from "react";
+import EditNote from "./EditNote";
 
 function NoteList({ sortBy }) {
   const notes = useNotes();
@@ -30,6 +34,7 @@ function NoteList({ sortBy }) {
 export default NoteList;
 
 function NoteItem({ note }) {
+  const [open, setOpen] = useState(false);
   const dispatch = useNotesDisptch();
   const options = {
     day: "numeric",
@@ -39,7 +44,7 @@ function NoteItem({ note }) {
 
   return (
     <div
-      className={`note-item ${note.completed ? "completed" : ""}`}
+      className={`note-item ${note.completed ? "completed" : ""} shadow-md`}
       data-testId="note-item"
     >
       <div className="note-item__header">
@@ -48,12 +53,19 @@ function NoteItem({ note }) {
           <p className="desc">{note.description}</p>
         </div>
         <div className="actions">
+          <button onClick={() => setOpen(true)} >
+            <PencilSquareIcon className="w-5 h-5 text-[#4f46e5]" />
+          </button>
+          <Modal open={open} onClose={() => setOpen(false)} title={`Edit Note ${note.title}`} >
+            <EditNote noteId={note.id} onSubmit={()=>setOpen(false)} />
+          </Modal>
           <button
             onClick={() => dispatch({ type: "delete", payload: note.id })}
           >
-            ❌
+            <TrashIcon className="w-5 h-5 text-rose-500" />
           </button>
           <input
+            className="form-checkbox w-5 h-5 rounded-md border-[#4f46e5]"
             type="checkbox"
             name={note.id}
             id={note.id}

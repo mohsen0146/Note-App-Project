@@ -1,50 +1,48 @@
 import { useState } from "react";
-import { useNotesDisptch } from "../context/NotesContext";
+import { useNotes, useNotesDisptch } from "../context/NotesContext";
 
-function AddNewNote() {
+function EditNote({ noteId, onSubmit }) {
+  const notes = useNotes();
+  const note = notes.find((note) => note.id === noteId);
   const dispatch = useNotesDisptch();
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const [title, setTitle] = useState(note.title);
+  const [description, setDescription] = useState(note.description);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!title || !description) return null;
-    const newNote = {
+    // if (!title || !description) return null;
+    const EditedNote = {
       title,
       description,
-      id: Date.now(),
-      completed: false,
-      createdAt: new Date().toISOString(),
+      id: note.id,
+      completed: note.completed,
+      createdAt: note.createdAt,
     };
-    dispatch({ type: "add", payload: newNote });
-    setTitle("");
-    setDescription("");
+    dispatch({ type: "edit", payload: EditedNote });
+    onSubmit();
   };
 
   return (
-    <div className="add-new-note">
-      <h2 className="font-bold">Add New Note</h2>
+    <div className="w-full">
       <form className="note-form" onSubmit={handleSubmit}>
         <input
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           type="text"
           className="text-field shadow-md"
-          placeholder="Note title"
         />
         <input
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           type="text"
           className="text-field shadow-md"
-          placeholder="Note description"
         />
         <button type="submit" className="btn btn--primary shadow-lg font-bold">
-          Add New Note
+          Edit Note
         </button>
       </form>
     </div>
   );
 }
 
-export default AddNewNote;
+export default EditNote;

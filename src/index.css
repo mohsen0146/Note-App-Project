@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   --bg-color: #f3f4f6;
@@ -23,19 +27,15 @@ body {
   background-color: var(--bg-color);
   width: 100vw;
   min-height: 100vh;
+  font-family:sans-serif;
 }
 
-input {
+input.text-field {
   display: block;
   outline: none;
   border: none;
 }
 
-button {
-  outline: none;
-  border: none;
-  cursor: pointer;
-}
 p {
   text-align: left;
 }
@@ -50,8 +50,10 @@ h2 {
   color: var(--text-700);
 }
 
-input[type="checkbox"] {
-  transform: scale(1.5);
+@media screen and (min-width: 768px) {
+  h1 {
+    margin-bottom: 0;
+  }
 }
 
 button {
@@ -62,12 +64,13 @@ button {
 }
 
 select {
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 2rem;
   outline: none;
-  border: 1px solid var(--text-400);
+  border: 1px solid var(--primary-600);
   border-radius: 0.75rem;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-700);
+  background-color: #fff;
 }
 
 .text-field {
@@ -77,6 +80,7 @@ select {
   color: var(--text-700);
   font-size: 1rem;
 }
+
 .btn {
   border-radius: 0.5rem;
   padding: 1rem 1rem;
